@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<model name="fiat_500e_passive">
+<model name="fiat_500e_passive_random_road">
   <header formatversion="2" hwxversion="2021.0" script="oml"/>
   <edition>
     <properties>
       <property name="creator" value="adyer"/>
       <property name="creationdate" value="06/01/16 09:02:18"/>
       <property name="revision" value="0"/>
-      <property name="lastmodifieddate" value="06/19/21 23:23:16"/>
+      <property name="lastmodifieddate" value="06/19/21 23:19:03"/>
       <property name="comments" value=""/>
     </properties>
   </edition>
-  <initialization>time_final=2;&#xA;&#xA;%%vehicle parameters&#xA;ms=750;     % kg&#xA;mus=75;     % kg&#xA;kus=300000; % N/m&#xA;%ks=30000;   % N/m&#xA;cus=0;      % Ns/m&#xA;%cs=3000;    % Ns/m&#xA;&#xA;ks=GetFromBase(&apos;ks&apos;, 1000);&#xA;cs=GetFromBase(&apos;cs&apos;, 500);&#xA;&#xA;&#xA;&#xA;&#xA;</initialization>
+  <initialization>time_final=2;&#xA;&#xA;%%vehicle parameters&#xA;ms=750;     % kg&#xA;mus=75;     % kg&#xA;kus=300000; % N/m&#xA;%ks=30000;   % N/m&#xA;cus=0;      % Ns/m&#xA;%cs=3000;    % Ns/m&#xA;&#xA;ks=GetFromBase(&apos;ks&apos;, 30000);&#xA;cs=GetFromBase(&apos;cs&apos;, 3000);&#xA;&#xA;&#xA;&#xA;&#xA;</initialization>
   <finalization/>
   <diagram>
     <block name="Suspension_Stroke_Comparison" type="block">
@@ -486,6 +486,304 @@
             </section>
           </parameters>
         </block>
+        <block name="ContinuousRandom" type="block">
+          <template name="system/SignalGenerators/ContinuousRandom"/>
+          <properties>
+            <property name="inlinable" value="0"/>
+            <property name="masked" value="1"/>
+            <property name="atomic" value="0"/>
+          </properties>
+          <graphics>
+            <label position="bottom" visible="0" font="Arial,11" color="255,255,255,255"/>
+            <frame shape="rectangle" visible="1" color="0,0,0,255" thickness="1.5"/>
+            <background color="255,255,255,255"/>
+            <position x="-60.89244079589844" y="222.14968872070312"/>
+            <size width="110" height="40"/>
+            <rotate angle="0"/>
+            <texts>
+              <text name="text1" color="0,0,0,255" clip="1" x="0.5" y="0.5" rotate="1" visible="1" font="Arial,12" align="center">Random Generator&#xA;Standard Normal</text>
+            </texts>
+            <images>
+              <image name="image1" file="" visible="1" alpha="255" aspectratio="1" x="0" y="0" width="1" height="1" clip="1" rotate="1"/>
+            </images>
+            <flip value="0">
+              <images>
+                <image name="image2" file="" visible="1" alpha="255" aspectratio="1" x="0" y="0" width="1" height="1" clip="1" rotate="1"/>
+              </images>
+            </flip>
+          </graphics>
+          <ports>
+            <port name="" type="fixedport">
+              <properties>
+                <property name="iotype" value="out"/>
+                <property name="datatype" value="Explicit"/>
+                <property name="portnumber" value="1"/>
+              </properties>
+              <graphics>
+                <location position="right"/>
+                <label visible="1" font="Arial,10" color="255,255,255,255"/>
+                <frame shape="triangle" visible="1" color="64,64,64,255" thickness="1.5"/>
+                <background color="64,64,64,255"/>
+              </graphics>
+            </port>
+            <port name="" type="fixedport">
+              <properties>
+                <property name="iotype" value="in"/>
+                <property name="datatype" value="Activation"/>
+                <property name="portnumber" value="1"/>
+              </properties>
+              <graphics>
+                <location position="top"/>
+                <label visible="1" font="Arial,10" color="255,255,255,255"/>
+                <frame shape="triangle" visible="1" color="183,15,19,255" thickness="1.5"/>
+                <background color="183,15,19,255"/>
+              </graphics>
+            </port>
+          </ports>
+          <parameters>
+            <section name="Parameters">
+              <parametercombobox name="distrib">
+                <parameter name="uniform" value="0"/>
+                <parameter name="normal" value="1"/>
+                <parameter name="log_normal" value="0"/>
+                <parameter name="beta" value="0"/>
+                <parameter name="gamma" value="0"/>
+                <parameter name="chi" value="0"/>
+                <parameter name="exp" value="0"/>
+                <parameter name="F" value="0"/>
+                <parameter name="T" value="0"/>
+                <parameter name="pearson" value="0"/>
+                <parameter name="inv_gamma" value="0"/>
+                <parameter name="inv_beta" value="0"/>
+              </parametercombobox>
+              <parameter name="seed" value="-1"/>
+              <parametertable name="Uniform_param">
+                <columns number="2">
+                  <parameter name="A" value="0"/>
+                  <parameter name="B" value="1"/>
+                </columns>
+                <rows number="distrib.uniform">
+                </rows>
+              </parametertable>
+              <parametertable name="Normal_param">
+                <columns number="2">
+                  <parameter name="mean" value="0"/>
+                  <parameter name="variance" value="1"/>
+                </columns>
+                <rows number="distrib.normal">
+                  <row>
+                    <value>0</value>
+                    <value>1</value>
+                  </row>
+                </rows>
+              </parametertable>
+              <parametertable name="LNormal_param">
+                <columns number="2">
+                  <parameter name="meanL" value="0"/>
+                  <parameter name="varianceL" value="1"/>
+                </columns>
+                <rows number="distrib.log_normal">
+                </rows>
+              </parametertable>
+              <parametertable name="Beta_param">
+                <columns number="2">
+                  <parameter name="alpha" value="1"/>
+                  <parameter name="beta" value="1"/>
+                </columns>
+                <rows number="distrib.beta">
+                </rows>
+              </parametertable>
+              <parametertable name="Gamma_param">
+                <columns number="2">
+                  <parameter name="k" value="1"/>
+                  <parameter name="theta" value="1"/>
+                </columns>
+                <rows number="distrib.gamma">
+                </rows>
+              </parametertable>
+              <parametertable name="Chi_param">
+                <columns number="1">
+                  <parameter name="K" value="1"/>
+                </columns>
+                <rows number="distrib.chi">
+                </rows>
+              </parametertable>
+              <parametertable name="Exp_param">
+                <columns number="1">
+                  <parameter name="lambda" value="1"/>
+                </columns>
+                <rows number="distrib.exp">
+                </rows>
+              </parametertable>
+              <parametertable name="F_param">
+                <columns number="2">
+                  <parameter name="d1" value="1"/>
+                  <parameter name="d2" value="1"/>
+                </columns>
+                <rows number="distrib.F">
+                </rows>
+              </parametertable>
+              <parametertable name="T_param">
+                <columns number="1">
+                  <parameter name="t" value="1"/>
+                </columns>
+                <rows number="distrib.T">
+                </rows>
+              </parametertable>
+              <parametertable name="Pearson_param">
+                <columns number="4">
+                  <parameter name="mean" value="1"/>
+                  <parameter name="variance" value="1"/>
+                  <parameter name="skewness" value="1"/>
+                  <parameter name="kurtosis" value="3"/>
+                </columns>
+                <rows number="distrib.pearson">
+                </rows>
+              </parametertable>
+              <parametertable name="Inv_gamma_param">
+                <columns number="2">
+                  <parameter name="alpha" value="1"/>
+                  <parameter name="beta" value="1"/>
+                </columns>
+                <rows number="distrib.inv_gamma">
+                </rows>
+              </parametertable>
+              <parametertable name="Inv_beta_param">
+                <columns number="2">
+                  <parameter name="alpha" value="1"/>
+                  <parameter name="beta" value="1"/>
+                </columns>
+                <rows number="distrib.inv_beta">
+                </rows>
+              </parametertable>
+            </section>
+          </parameters>
+        </block>
+        <block name="SampleClock" type="block">
+          <template name="system/ActivationOperations/SampleClock"/>
+          <properties>
+            <property name="inlinable" value="0"/>
+            <property name="masked" value="1"/>
+            <property name="atomic" value="0"/>
+          </properties>
+          <graphics>
+            <label position="top" visible="0" font="Arial,11" color="255,255,255,255"/>
+            <frame shape="rectangle" visible="0" color="0,0,0,0" thickness="1.5"/>
+            <background color="255,255,255,0"/>
+            <position x="-25.892440795896405" y="153.83538818359375"/>
+            <size width="40" height="40"/>
+            <rotate angle="0"/>
+            <texts>
+              <text name="text1" color="0,0,0,255" clip="1" x="0.5" y="0.25" rotate="1" visible="1" font="Arial,12" align="center">0.01</text>
+              <text name="text2" color="0,0,0,255" clip="1" x="0.5" y="0.75" rotate="1" visible="1" font="Arial,12" align="center">0</text>
+            </texts>
+            <images>
+              <image name="image1" file="ActivationOperations/sampleClock.svg" visible="1" alpha="255" aspectratio="0" x="0" y="0" width="1" height="1" clip="1" rotate="1"/>
+            </images>
+            <flip value="0">
+              <images>
+                <image name="image2" file="ActivationOperations/sampleClock.svg" visible="1" alpha="255" aspectratio="0" x="0" y="0" width="1" height="1" clip="1" rotate="1"/>
+              </images>
+            </flip>
+          </graphics>
+          <ports>
+            <port name="" type="fixedport">
+              <properties>
+                <property name="iotype" value="out"/>
+                <property name="datatype" value="Activation"/>
+                <property name="portnumber" value="1"/>
+              </properties>
+              <graphics>
+                <location position="bottom"/>
+                <label visible="1" font="Arial,10" color="255,255,255,255"/>
+                <frame shape="triangle" visible="1" color="183,15,19,255" thickness="1.5"/>
+                <background color="183,15,19,255"/>
+              </graphics>
+            </port>
+          </ports>
+          <parameters>
+            <section name="Parameters">
+              <parameter name="frequ" value="0.01"/>
+              <parameter name="offset" value="0"/>
+            </section>
+          </parameters>
+        </block>
+        <block name="Saturation" type="block">
+          <template name="system/Hybrid/Saturation"/>
+          <properties>
+            <property name="inlinable" value="0"/>
+            <property name="masked" value="1"/>
+            <property name="atomic" value="0"/>
+          </properties>
+          <graphics>
+            <label position="bottom" visible="0" font="Arial,11" color="255,255,255,255"/>
+            <frame shape="rectangle" visible="1" color="0,0,0,255" thickness="1.5"/>
+            <background color="255,255,255,255"/>
+            <position x="81.97225189208984" y="222.14968872070312"/>
+            <size width="40" height="40"/>
+            <rotate angle="0"/>
+            <texts>
+              <text name="text1" color="0,0,0,255" clip="1" x="0.5" y="0.5" rotate="1" visible="1" font="Arial,12" align="center"/>
+            </texts>
+            <images>
+              <image name="image1" file="Hybrid/saturation.svg" visible="1" alpha="255" aspectratio="1" x="0" y="0" width="1" height="1" clip="1" rotate="1"/>
+            </images>
+            <flip value="0">
+              <images>
+                <image name="image2" file="Hybrid/saturation.svg" visible="1" alpha="255" aspectratio="1" x="0" y="0" width="1" height="1" clip="1" rotate="1"/>
+              </images>
+            </flip>
+          </graphics>
+          <ports>
+            <port name="" type="fixedport">
+              <properties>
+                <property name="iotype" value="in"/>
+                <property name="datatype" value="Explicit"/>
+                <property name="portnumber" value="1"/>
+              </properties>
+              <graphics>
+                <location position="left"/>
+                <label visible="1" font="Arial,10" color="255,255,255,255"/>
+                <frame shape="triangle" visible="1" color="64,64,64,255" thickness="1.5"/>
+                <background color="64,64,64,255"/>
+              </graphics>
+            </port>
+            <port name="" type="fixedport">
+              <properties>
+                <property name="iotype" value="out"/>
+                <property name="datatype" value="Explicit"/>
+                <property name="portnumber" value="1"/>
+              </properties>
+              <graphics>
+                <location position="right"/>
+                <label visible="1" font="Arial,10" color="255,255,255,255"/>
+                <frame shape="triangle" visible="1" color="64,64,64,255" thickness="1.5"/>
+                <background color="64,64,64,255"/>
+              </graphics>
+            </port>
+            <port name="" type="variableport">
+              <properties>
+                <property name="iotype" value="in"/>
+                <property name="datatype" value="Activation"/>
+                <property name="portnumber" value="externalActivation"/>
+              </properties>
+              <graphics>
+                <location position="top"/>
+                <label visible="1" font="Arial,10" color="255,255,255,255"/>
+                <frame shape="triangle" visible="1" color="183,15,19,255" thickness="1.5"/>
+                <background color="183,15,19,255"/>
+              </graphics>
+            </port>
+          </ports>
+          <parameters>
+            <section name="Parameters">
+              <parameter name="upper" value="1"/>
+              <parameter name="lower" value="-1"/>
+              <parameter name="zc" value="1"/>
+              <parameter name="externalActivation" value="0"/>
+            </section>
+          </parameters>
+        </block>
         <block name="SignalGenerator_1" type="block">
           <template name="system/SignalGenerators/SignalGenerator"/>
           <properties>
@@ -497,7 +795,7 @@
             <label position="bottom" visible="0" font="Arial,11" color="255,255,255,255"/>
             <frame shape="rectangle" visible="1" color="0,0,0,255" thickness="1.5"/>
             <background color="255,255,255,255"/>
-            <position x="-21.44391632080078" y="294.4716491699219"/>
+            <position x="-32.63129425048828" y="295.662841796875"/>
             <size width="80" height="40"/>
             <rotate angle="0"/>
             <texts>
@@ -606,12 +904,29 @@
           <pen shape="line" color="64,64,64,255" thickness="1.5"/>
           <points/>
         </link>
+        <link name="" type="Activation">
+          <label position="bottom" visible="0" font="Arial,11" color="255,255,255,255"/>
+          <from block="SampleClock" port="1" iotype="out"/>
+          <to block="ContinuousRandom" port="1" iotype="in"/>
+          <pen shape="line" color="183,15,19,255" thickness="1.5"/>
+          <points/>
+        </link>
         <link name="" type="Explicit">
           <label position="bottom" visible="0" font="Arial,11" color="255,255,255,255"/>
-          <from block="SignalGenerator_1" port="1" iotype="out"/>
-          <to block="ContTransFunc" port="1" iotype="in"/>
+          <from block="ContinuousRandom" port="1" iotype="out"/>
+          <to block="Saturation" port="1" iotype="in"/>
           <pen shape="line" color="64,64,64,255" thickness="1.5"/>
           <points/>
+        </link>
+        <link name="" type="Explicit">
+          <label position="bottom" visible="0" font="Arial,11" color="255,255,255,255"/>
+          <from block="Saturation" port="1" iotype="out"/>
+          <to block="ContTransFunc" port="1" iotype="in"/>
+          <pen shape="line" color="64,64,64,255" thickness="1.5"/>
+          <points>
+            <point x="139.58713912963867" y="242.14968872070312"/>
+            <point x="139.58713912963867" y="314.4716491699219"/>
+          </points>
         </link>
         <context>f_cut=10; %Hz cut frequency low-pass filter&#xA;n_order=3; %filter order&#xA;&#xA;%Livio&apos;s filter&#xA;a=poly(-ones(1,n_order)*f_cut*2*pi);&#xA;b=a(n_order+1);&#xA;</context>
         <graphics>
@@ -3373,8 +3688,8 @@
       </ports>
       <parameters>
         <section name="Parameters">
-          <parameter name="xL" value="0"/>
-          <parameter name="xU" value="30000"/>
+          <parameter name="xL" value="[20000;2000]"/>
+          <parameter name="xU" value="[40000;4000]"/>
           <parameter name="RhoBeg" value="100"/>
           <parameter name="RhoEnd" value="5"/>
           <parameter name="Npt" value="-1"/>
@@ -3849,7 +4164,7 @@
         <size width="96" height="48"/>
         <rotate angle="0"/>
         <texts>
-          <text name="text1" color="0,0,0,255" clip="1" x="0.500000" y="0.500000" rotate="1" visible="1" font="Arial,10" align="center">   1.6694&#xA;        0</text>
+          <text name="text1" color="0,0,0,255" clip="1" x="0.500000" y="0.500000" rotate="1" visible="1" font="Arial,10" align="center">    20100&#xA;     2000</text>
         </texts>
         <images>
           <image name="image1" file="" visible="1" alpha="255" aspectratio="1" x="0" y="0" width="1" height="1" clip="1" rotate="1"/>
